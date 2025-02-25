@@ -154,9 +154,107 @@ struct ProfileView: View {
                 .padding(.horizontal, 4)
                 .padding(.top, 4)
                 
-                // Recent Activity
-                PostCardView()
-                    .padding(.top, 8)
+                // Recent Activity Section
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Recent Activity")
+                        .font(.headline)
+                        .padding(.horizontal)
+                    
+                    // First post card
+                    PostCardView()
+                        .padding(.top, 4)
+                    
+                    // Second post card - with different variables
+                    VStack {
+                        Divider()
+                        HStack {
+                            Image(systemName: "person.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 50, height: 50)
+                                .clipShape(Circle())
+                            
+                            VStack(alignment: .leading) {
+                                Text("You")
+                                    .font(.body) 
+                                    .fontWeight(.bold) +
+                                Text(" tried Negroni Sbagliato")
+                                    .font(.body)
+                                    .fontWeight(.bold)
+                                
+                                Text("Florence, Italy")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                            }
+                            Spacer()
+                            
+                            Text("9.1")
+                                .foregroundColor(.green)
+                                .font(.title)
+                        }
+                        .padding()
+                        
+                        HStack {
+                            Image(systemName: "heart.fill")
+                                .foregroundColor(.red)
+                            Image(systemName: "text.bubble")
+                            Image(systemName: "square.and.arrow.up")
+                            
+                            Spacer()
+                            
+                            Text("12 likes")
+                                .font(.caption)
+                        }
+                        .padding(.horizontal)
+                        
+                        Divider()
+                    }
+                    
+                    // Third post card - with different variables
+                    VStack {
+                        Divider()
+                        HStack {
+                            Image(systemName: "person.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 50, height: 50)
+                                .clipShape(Circle())
+                            
+                            VStack(alignment: .leading) {
+                                Text("You")
+                                    .font(.body) 
+                                    .fontWeight(.bold) +
+                                Text(" bookmarked White Negroni")
+                                    .font(.body)
+                                    .fontWeight(.bold)
+                                
+                                Text("New York, USA")
+                                    .font(.caption)
+                                    .foregroundColor(.gray)
+                            }
+                            Spacer()
+                            
+                            Image(systemName: "bookmark.fill")
+                                .foregroundColor(.orange)
+                                .font(.title)
+                        }
+                        .padding()
+                        
+                        HStack {
+                            Image(systemName: "heart")
+                            Image(systemName: "text.bubble")
+                            Image(systemName: "square.and.arrow.up")
+                            
+                            Spacer()
+                            
+                            Text("5 likes")
+                                .font(.caption)
+                        }
+                        .padding(.horizontal)
+                        
+                        Divider()
+                    }
+                }
                 
                 Spacer()
             }
