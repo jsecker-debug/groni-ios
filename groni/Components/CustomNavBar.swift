@@ -99,7 +99,7 @@ struct CustomNavBar: View {
             Spacer()
         }
         .padding(.top, 8)
-        .padding(.bottom, 2)
+        .padding(.bottom, 0)
         .frame(maxWidth: .infinity)
         .background(Color.white)
         .overlay(

@@ -32,7 +32,6 @@ struct MainView: View {
                 // Custom navbar from Components directory
                 CustomNavBar(selectedTab: $selectedTab)
             }
-            .edgesIgnoringSafeArea(.bottom) // Extend to the bottom edge of the screen
         }
     }
 }
