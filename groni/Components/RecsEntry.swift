@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ListEntry: View {
+struct RecsEntry: View {
     let rank: Int
     let restaurantName: String
     let location: String
@@ -42,11 +42,17 @@ struct ListEntry: View {
                 
                 Spacer()
                 
+                // Avg Score label
+                Text("Avg Score")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                    .padding(.trailing, 4)
+                
                 // Score
                 Text(score)
                     .font(.headline)
                     .fontWeight(.bold)
-                    .foregroundColor(.orange)
+                    .foregroundColor(.gray)
                 
                 // Arrow
                 Image(systemName: "chevron.right")
@@ -63,7 +69,7 @@ struct ListEntry: View {
 
 #Preview {
     VStack {
-        ListEntry(
+        RecsEntry(
             rank: 1,
             restaurantName: "Dante NYC",
             location: "New York, USA",
@@ -71,7 +77,7 @@ struct ListEntry: View {
             imageName: "fork.knife.circle.fill"
         )
         
-        ListEntry(
+        RecsEntry(
             rank: 2,
             restaurantName: "Bar Termini",
             location: "London, UK",

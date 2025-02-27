@@ -32,6 +32,7 @@ struct MainView: View {
                 // Custom navbar from Components directory
                 CustomNavBar(selectedTab: $selectedTab)
             }
+            .ignoresSafeArea(.keyboard) // Ensures keyboard appears as top layer
         }
     }
 }

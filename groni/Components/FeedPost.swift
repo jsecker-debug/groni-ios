@@ -11,6 +11,7 @@ struct FeedPost: View {
     var comments: Int = 8
     var date: String = "2 hours ago"
     var isLiked: Bool = false
+    var onPlaceNameTapped: () -> Void = {}
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -27,11 +28,27 @@ struct FeedPost: View {
                     )
                 
                 // Username and place
-                Text(username)
-                    .fontWeight(.semibold) +
-                Text(" drank at ") +
-                Text(placeName)
-                    .fontWeight(.semibold)
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack(spacing: 4) {
+                        Text(username)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.primary)
+                        
+                        Text("drank at")
+                            .foregroundColor(.primary)
+                        
+                        Text(placeName)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.blue)
+                            .onTapGesture {
+                                onPlaceNameTapped()
+                            }
+                    }
+                    
+                    Text(location)
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
                 
                 Spacer()
                 
@@ -83,12 +100,6 @@ struct FeedPost: View {
                 Image(systemName: "mappin.circle.fill")
                     .foregroundColor(.gray)
                     .font(.system(size: 14))
-                
-                Text(location)
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-                
-                Spacer()
                 
                 Text(date)
                     .font(.caption)

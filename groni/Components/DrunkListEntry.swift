@@ -1,9 +1,9 @@
 import SwiftUI
 
-struct ListEntry: View {
-    let rank: Int
+struct DrunkListEntry: View {
     let restaurantName: String
     let location: String
+    let date: String
     let score: String
     let imageName: String
     var onTapped: () -> Void = {}
@@ -13,13 +13,6 @@ struct ListEntry: View {
             onTapped()
         }) {
             HStack(spacing: 12) {
-                // Rank number
-                Text("\(rank).")
-                    .font(.body)
-                    .fontWeight(.medium)
-                    .frame(width: 30, alignment: .leading)
-                    .foregroundColor(.primary)
-                
                 // Restaurant image
                 Image(systemName: imageName)
                     .resizable()
@@ -42,11 +35,17 @@ struct ListEntry: View {
                 
                 Spacer()
                 
+                // Date
+                Text(date)
+                    .font(.caption)
+                    .foregroundColor(.gray)
+                    .padding(.trailing, 4)
+                
                 // Score
                 Text(score)
                     .font(.headline)
                     .fontWeight(.bold)
-                    .foregroundColor(.orange)
+                    .foregroundColor(.gray)
                 
                 // Arrow
                 Image(systemName: "chevron.right")
@@ -63,18 +62,18 @@ struct ListEntry: View {
 
 #Preview {
     VStack {
-        ListEntry(
-            rank: 1,
+        DrunkListEntry(
             restaurantName: "Dante NYC",
             location: "New York, USA",
+            date: "May 12",
             score: "9.2",
             imageName: "fork.knife.circle.fill"
         )
         
-        ListEntry(
-            rank: 2,
+        DrunkListEntry(
             restaurantName: "Bar Termini",
             location: "London, UK",
+            date: "Apr 28",
             score: "8.7",
             imageName: "fork.knife.circle.fill"
         )
