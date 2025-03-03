@@ -46,7 +46,7 @@ struct PlaceView: View {
                 ZStack(alignment: .topLeading) {
                     // Map view
                     Map(coordinateRegion: $mapRegion, annotationItems: [MapAnnotation(coordinate: coordinate)]) { annotation in
-                        MapMarker(coordinate: annotation.coordinate, tint: .orange)
+                        MapMarker(coordinate: annotation.coordinate, tint: Color.hex("#E65A2F"))
                     }
                     .frame(height: 250)
                     .disabled(!showingFullMap)
@@ -120,9 +120,9 @@ struct PlaceView: View {
                         }) {
                             HStack(spacing: 6) {
                                 Image(systemName: "plus.circle.fill")
-                                    .foregroundColor(.orange)
+                                    .foregroundColor(Color.hex("#E65A2F"))
                                 Text("Add")
-                                    .foregroundColor(.orange)
+                                    .foregroundColor(Color.hex("#E65A2F"))
                                     .fontWeight(.medium)
                             }
                         }
@@ -132,9 +132,9 @@ struct PlaceView: View {
                         }) {
                             HStack(spacing: 6) {
                                 Image(systemName: "bookmark.fill")
-                                    .foregroundColor(.orange)
+                                    .foregroundColor(Color.hex("#E65A2F"))
                                 Text("Save")
-                                    .foregroundColor(.orange)
+                                    .foregroundColor(Color.hex("#E65A2F"))
                                     .fontWeight(.medium)
                             }
                         }
@@ -176,14 +176,14 @@ struct PlaceView: View {
                                         Text(tabs[index])
                                             .font(.subheadline)
                                             .fontWeight(selectedTab == index ? .semibold : .regular)
-                                            .foregroundColor(selectedTab == index ? .orange : .gray)
+                                            .foregroundColor(selectedTab == index ? Color.hex("#E65A2F") : .gray)
                                             .padding(.horizontal, 16)
                                             .padding(.vertical, 8)
                                         
                                         // Underline for selected tab
                                         Rectangle()
                                             .frame(height: 2)
-                                            .foregroundColor(selectedTab == index ? .orange : .clear)
+                                            .foregroundColor(selectedTab == index ? Color.hex("#E65A2F") : .clear)
                                     }
                                 }
                                 .frame(maxWidth: .infinity)
@@ -335,7 +335,7 @@ struct PlaceView: View {
                 HStack(alignment: .top, spacing: 12) {
                     Image(systemName: "clock.fill")
                         .font(.title3)
-                        .foregroundColor(.orange)
+                        .foregroundColor(Color.hex("#E65A2F"))
                         .frame(width: 24)
                     
                     VStack(alignment: .leading, spacing: 2) {
@@ -353,7 +353,7 @@ struct PlaceView: View {
                 HStack(alignment: .top, spacing: 12) {
                     Image(systemName: "phone.fill")
                         .font(.title3)
-                        .foregroundColor(.orange)
+                        .foregroundColor(Color.hex("#E65A2F"))
                         .frame(width: 24)
                     
                     VStack(alignment: .leading, spacing: 2) {
@@ -371,7 +371,7 @@ struct PlaceView: View {
                 HStack(alignment: .top, spacing: 12) {
                     Image(systemName: "globe")
                         .font(.title3)
-                        .foregroundColor(.orange)
+                        .foregroundColor(Color.hex("#E65A2F"))
                         .frame(width: 24)
                     
                     VStack(alignment: .leading, spacing: 2) {
@@ -420,7 +420,7 @@ struct PlaceView: View {
                     Spacer()
                     
                     Image(systemName: "calendar")
-                        .foregroundColor(.orange)
+                        .foregroundColor(Color.hex("#E65A2F"))
                 }
                 .padding()
                 .background(
@@ -445,7 +445,7 @@ struct PlaceView: View {
                     Spacer()
                     
                     Image(systemName: "person.2.fill")
-                        .foregroundColor(.orange)
+                        .foregroundColor(Color.hex("#E65A2F"))
                 }
                 .padding()
                 .background(
@@ -477,7 +477,7 @@ struct PlaceView: View {
                                     .padding(.vertical, 8)
                                     .background(
                                         RoundedRectangle(cornerRadius: 20)
-                                            .fill(selectedTime == time ? Color.orange : Color.gray.opacity(0.1))
+                                            .fill(selectedTime == time ? Color.hex("#E65A2F") : Color.gray.opacity(0.1))
                                     )
                                     .foregroundColor(selectedTime == time ? .white : .primary)
                             }
@@ -501,7 +501,7 @@ struct PlaceView: View {
                         .padding(.vertical, 12)
                         .background(
                             RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.orange)
+                                .fill(Color.hex("#E65A2F"))
                         )
                 }
                 .padding(.horizontal, 16)
@@ -533,7 +533,7 @@ struct PlaceView: View {
         HStack(alignment: .top, spacing: 12) {
             Image(systemName: icon)
                 .font(.title3)
-                .foregroundColor(.orange)
+                .foregroundColor(Color.hex("#E65A2F"))
                 .frame(width: 24)
             
             VStack(alignment: .leading, spacing: 2) {
@@ -562,7 +562,7 @@ struct PlaceView: View {
         case 0..<6:
             return .red
         case 6..<7.5:
-            return .orange
+            return Color.hex("#E65A2F")
         case 7.5..<9:
             return .green
         case 9...10:
@@ -575,8 +575,8 @@ struct PlaceView: View {
     // Helper function to generate different gradients for photo cards
     private func photoGradient(for index: Int) -> LinearGradient {
         let gradients: [LinearGradient] = [
-            LinearGradient(gradient: Gradient(colors: [Color.orange.opacity(0.7), Color.orange.opacity(0.3)]), startPoint: .topLeading, endPoint: .bottomTrailing),
-            LinearGradient(gradient: Gradient(colors: [Color.red.opacity(0.7), Color.orange.opacity(0.3)]), startPoint: .topLeading, endPoint: .bottomTrailing),
+            LinearGradient(gradient: Gradient(colors: [Color.hex("#E65A2F").opacity(0.7), Color.hex("#E65A2F").opacity(0.3)]), startPoint: .topLeading, endPoint: .bottomTrailing),
+            LinearGradient(gradient: Gradient(colors: [Color.red.opacity(0.7), Color.hex("#E65A2F").opacity(0.3)]), startPoint: .topLeading, endPoint: .bottomTrailing),
             LinearGradient(gradient: Gradient(colors: [Color.purple.opacity(0.7), Color.pink.opacity(0.3)]), startPoint: .topLeading, endPoint: .bottomTrailing),
             LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.7), Color.teal.opacity(0.3)]), startPoint: .topLeading, endPoint: .bottomTrailing),
             LinearGradient(gradient: Gradient(colors: [Color.green.opacity(0.7), Color.yellow.opacity(0.3)]), startPoint: .topLeading, endPoint: .bottomTrailing)

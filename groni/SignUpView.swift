@@ -19,7 +19,7 @@ struct SignUpView: View {
             HStack(spacing: 4) {
                 ForEach(1...4, id: \.self) { step in
                     Circle()
-                        .fill(step <= currentStep ? Color.orange : Color.gray.opacity(0.3))
+                        .fill(step <= currentStep ? Color.hex("#E65A2F") : Color.gray.opacity(0.3))
                         .frame(width: 10, height: 10)
                 }
                 
@@ -81,13 +81,18 @@ struct SignUpView: View {
                     }
                 }) {
                     Image(systemName: "chevron.left")
-                        .foregroundColor(.orange)
+                        .foregroundColor(Color.hex("#E65A2F"))
                 }
             }
         }
     }
     
     private func completeSignUp() {
+        // Ensure username starts with @
+        if !username.hasPrefix("@") {
+            username = "@\(username)"
+        }
+        
         // Here you would implement the actual sign-up logic with Firebase
         print("Sign up completed with:")
         print("Email: \(email)")
@@ -178,7 +183,7 @@ struct EmailPasswordView: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.orange)
+                    .background(Color.hex("#E65A2F"))
                     .cornerRadius(10)
             }
             .padding(.horizontal)
@@ -213,11 +218,17 @@ struct UsernameCountryView: View {
                     .font(.subheadline)
                     .foregroundColor(.gray)
                 
-                TextField("Choose a username", text: $username)
-                    .autocapitalization(.none)
-                    .padding()
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(10)
+                HStack {
+                    Text("@")
+                        .foregroundColor(.gray)
+                        .padding(.leading)
+                    
+                    TextField("Choose a username", text: $username)
+                        .autocapitalization(.none)
+                }
+                .padding(.vertical)
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(10)
             }
             .padding(.horizontal)
             
@@ -258,7 +269,7 @@ struct UsernameCountryView: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.orange)
+                    .background(Color.hex("#E65A2F"))
                     .cornerRadius(10)
             }
             .padding(.horizontal)
@@ -292,7 +303,7 @@ struct CountryPickerView: View {
                             
                             if selectedCountry == country {
                                 Image(systemName: "checkmark")
-                                    .foregroundColor(.orange)
+                                    .foregroundColor(Color.hex("#E65A2F"))
                             }
                         }
                     }
@@ -364,7 +375,7 @@ struct DateOfBirthView: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.orange)
+                    .background(Color.hex("#E65A2F"))
                     .cornerRadius(10)
             }
             .padding(.horizontal)
@@ -404,7 +415,7 @@ struct TermsAndConfirmationView: View {
                     // Terms of service
                     HStack(alignment: .top) {
                         Image(systemName: "doc.text")
-                            .foregroundColor(.orange)
+                            .foregroundColor(Color.hex("#E65A2F"))
                         
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Terms of Service")
@@ -420,7 +431,7 @@ struct TermsAndConfirmationView: View {
                     // Data usage
                     HStack(alignment: .top) {
                         Image(systemName: "shield")
-                            .foregroundColor(.orange)
+                            .foregroundColor(Color.hex("#E65A2F"))
                         
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Data Usage")
@@ -448,7 +459,7 @@ struct TermsAndConfirmationView: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.orange)
+                    .background(Color.hex("#E65A2F"))
                     .cornerRadius(10)
             }
             .padding(.horizontal)
@@ -466,7 +477,7 @@ struct CheckboxToggleStyle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
         HStack {
             Image(systemName: configuration.isOn ? "checkmark.square.fill" : "square")
-                .foregroundColor(configuration.isOn ? .orange : .gray)
+                .foregroundColor(configuration.isOn ? Color.hex("#E65A2F") : .gray)
                 .font(.system(size: 20, weight: .semibold))
                 .onTapGesture {
                     configuration.isOn.toggle()

@@ -11,7 +11,7 @@ struct SignInView: View {
             // Logo or app name
             Text("groni")
                 .font(.system(size: 40, weight: .bold))
-                .foregroundColor(.orange)
+                .foregroundColor(Color.hex("#E65A2F"))
                 .padding(.top, 60)
                 .padding(.bottom, 40)
             
@@ -50,7 +50,7 @@ struct SignInView: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.orange)
+                    .background(Color.hex("#E65A2F"))
                     .cornerRadius(10)
             }
             .padding(.horizontal)
@@ -124,7 +124,7 @@ struct SignInView: View {
             }) {
                 Text("Sign Up")
                     .font(.subheadline)
-                    .foregroundColor(.orange)
+                    .foregroundColor(Color.hex("#E65A2F"))
                     .underline()
             }
             .padding(.top, 24)
@@ -138,7 +138,7 @@ struct SignInView: View {
                     presentationMode.wrappedValue.dismiss()
                 }) {
                     Image(systemName: "chevron.left")
-                        .foregroundColor(.orange)
+                        .foregroundColor(Color.hex("#E65A2F"))
                 }
             }
         }
