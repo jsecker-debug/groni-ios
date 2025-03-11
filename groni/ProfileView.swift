@@ -4,16 +4,14 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ProfileView: View {
-    // Profile data (placeholder values)
-    let name = "Joshua Secker"
-    let username = "@joshuasecker"
-    let followers = 120
-    let following = 84
-    let groniRank = "#1232"
-    let drunkCount = 47
-    let toDrinkCount = 23
+    @StateObject private var authService = AuthService.shared
+    
+    // Static counts (to be replaced with Firestore data later)
+    private let drunkCount: Int = 47
+    private let toDrinkCount: Int = 23
     
     var body: some View {
         ScrollView {
@@ -21,33 +19,50 @@ struct ProfileView: View {
                 // Profile header
                 VStack(spacing: 8) {
                     // Name
-                    Text(name)
+                    Text(authService.currentUser?.username ?? "Loading...")
                         .font(.title3)
                         .fontWeight(.bold)
                         
-                    
                     // Profile image
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 50, height: 50)
-                        .foregroundColor(.gray)
+                    if let profileImageURL = authService.currentUser?.profileImage {
+                        AsyncImage(url: profileImageURL) { image in
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 50, height: 50)
+                                .clipShape(Circle())
+                        } placeholder: {
+                            Image(systemName: "person.circle.fill")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 50, height: 50)
+                                .foregroundColor(.gray)
+                        }
+                    } else {
+                        Image(systemName: "person.circle.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 50, height: 50)
+                            .foregroundColor(.gray)
+                    }
                     
                     // Username and join date
                     VStack(spacing: 4) {
-                        Text(username)
+                        Text("@\(authService.currentUser?.username ?? "")")
                             .font(.subheadline)
                             .fontWeight(.bold)
                         
-                        Text("groni fiend since 2014")
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
+                        if let createdAt = authService.currentUser?.createdAt {
+                            Text("groni fiend since \(createdAt.formatted(.dateTime.year()))")
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                        }
                     }
                     
                     // Follower stats
                     HStack(spacing: 30) {
                         VStack {
-                            Text("\(followers)")
+                            Text("\(authService.currentUser?.followers.count ?? 0)")
                                 .font(.callout)
                                 .fontWeight(.bold)
                             Text("Followers")
@@ -56,7 +71,7 @@ struct ProfileView: View {
                         }
                         
                         VStack {
-                            Text("\(following)")
+                            Text("\(authService.currentUser?.following.count ?? 0)")
                                 .font(.callout)
                                 .fontWeight(.bold)
                             Text("Following")
@@ -65,7 +80,7 @@ struct ProfileView: View {
                         }
                         
                         VStack {
-                            Text(groniRank)
+                            Text("#\(calculateRank())")
                                 .font(.callout)
                                 .fontWeight(.bold)
                             Text("Groni Rank")
@@ -260,6 +275,13 @@ struct ProfileView: View {
             }
             .padding()
         }
+    }
+    
+    // Helper function to calculate rank (placeholder for now)
+    private func calculateRank() -> String {
+        // You can implement actual rank calculation logic here
+        // For now, returning a placeholder
+        return "1232"
     }
 }
 

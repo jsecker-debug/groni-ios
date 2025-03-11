@@ -1,10 +1,14 @@
 import SwiftUI
 
 struct SignInView: View {
-    @State private var username: String = ""
+    @State private var email: String = ""
     @State private var password: String = ""
     @Environment(\.presentationMode) var presentationMode
     @State private var showingSignUp = false
+    @StateObject private var authService = AuthService.shared
+    @State private var showingError = false
+    @State private var errorMessage = ""
+    @State private var isLoading = false
     
     var body: some View {
         VStack(spacing: 24) {
@@ -15,13 +19,15 @@ struct SignInView: View {
                 .padding(.top, 60)
                 .padding(.bottom, 40)
             
-            // Username field
+            // Email field
             VStack(alignment: .leading, spacing: 8) {
-                Text("Username")
+                Text("Email")
                     .font(.subheadline)
                     .foregroundColor(.gray)
                 
-                TextField("Enter your username", text: $username)
+                TextField("Enter your email", text: $email)
+                    .keyboardType(.emailAddress)
+                    .autocapitalization(.none)
                     .padding()
                     .background(Color.gray.opacity(0.1))
                     .cornerRadius(10)
@@ -43,18 +49,24 @@ struct SignInView: View {
             
             // Sign in button
             Button(action: {
-                // Sign in action (to be implemented)
+                signIn()
             }) {
-                Text("Sign In")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.hex("#E65A2F"))
-                    .cornerRadius(10)
+                if isLoading {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                } else {
+                    Text("Sign In")
+                        .font(.headline)
+                }
             }
+            .foregroundColor(.white)
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.hex("#E65A2F"))
+            .cornerRadius(10)
             .padding(.horizontal)
             .padding(.top, 16)
+            .disabled(isLoading)
             
             // Or divider
             HStack {
@@ -119,9 +131,7 @@ struct SignInView: View {
             .padding(.horizontal)
             
             // Sign up link
-            Button(action: {
-                showingSignUp = true
-            }) {
+            NavigationLink(destination: SignUpView()) {
                 Text("Sign Up")
                     .font(.subheadline)
                     .foregroundColor(Color.hex("#E65A2F"))
@@ -142,8 +152,30 @@ struct SignInView: View {
                 }
             }
         }
-        .navigationDestination(isPresented: $showingSignUp) {
-            SignUpView()
+        .alert("Error", isPresented: $showingError) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(errorMessage)
+        }
+    }
+    
+    private func signIn() {
+        isLoading = true
+        Task {
+            do {
+                try await authService.signIn(email: email, password: password)
+                // Navigate to main view after successful sign in
+                DispatchQueue.main.async {
+                    isLoading = false
+                    // Navigation will be handled by the app's root view based on authService.isAuthenticated
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    isLoading = false
+                    errorMessage = error.localizedDescription
+                    showingError = true
+                }
+            }
         }
     }
 }

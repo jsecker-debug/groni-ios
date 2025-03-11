@@ -3,6 +3,7 @@ import SwiftUI
 struct SignUpView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var currentStep = 1
+    @StateObject private var authService = AuthService.shared
     
     // User data
     @State private var email = ""
@@ -12,6 +13,11 @@ struct SignUpView: View {
     @State private var country = ""
     @State private var dateOfBirth = Date()
     @State private var isOver18 = false
+    
+    // Error handling
+    @State private var showingError = false
+    @State private var errorMessage = ""
+    @State private var isLoading = false
     
     var body: some View {
         VStack {
@@ -59,6 +65,7 @@ struct SignUpView: View {
                 case 4:
                     TermsAndConfirmationView(
                         isOver18: $isOver18,
+                        isLoading: $isLoading,
                         onComplete: { completeSignUp() },
                         onBack: { currentStep = 3 }
                     )
@@ -85,6 +92,11 @@ struct SignUpView: View {
                 }
             }
         }
+        .alert("Error", isPresented: $showingError) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(errorMessage)
+        }
     }
     
     private func completeSignUp() {
@@ -93,16 +105,31 @@ struct SignUpView: View {
             username = "@\(username)"
         }
         
-        // Here you would implement the actual sign-up logic with Firebase
-        print("Sign up completed with:")
-        print("Email: \(email)")
-        print("Username: \(username)")
-        print("Country: \(country)")
-        print("DOB: \(dateOfBirth)")
-        print("Is over 18: \(isOver18)")
-        
-        // Navigate back to sign in
-        presentationMode.wrappedValue.dismiss()
+        isLoading = true
+        Task {
+            do {
+                let user = try await authService.signUp(
+                    email: email,
+                    password: password,
+                    username: username,
+                    country: country,
+                    dateOfBirth: dateOfBirth
+                )
+                
+                // Successfully created and saved user
+                DispatchQueue.main.async {
+                    isLoading = false
+                    print("Successfully created user: \(user.username)")
+                    // Navigation will be handled by the app's root view based on authService.isAuthenticated
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    isLoading = false
+                    errorMessage = error.localizedDescription
+                    showingError = true
+                }
+            }
+        }
     }
 }
 
@@ -389,6 +416,7 @@ struct DateOfBirthView: View {
 // MARK: - Step 4: Terms and Confirmation
 struct TermsAndConfirmationView: View {
     @Binding var isOver18: Bool
+    @Binding var isLoading: Bool
     var onComplete: () -> Void
     var onBack: () -> Void
     
@@ -454,18 +482,23 @@ struct TermsAndConfirmationView: View {
             Button(action: {
                 onComplete()
             }) {
-                Text("Create Account")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.hex("#E65A2F"))
-                    .cornerRadius(10)
+                if isLoading {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                } else {
+                    Text("Create Account")
+                        .font(.headline)
+                }
             }
+            .foregroundColor(.white)
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(Color.hex("#E65A2F"))
+            .cornerRadius(10)
             .padding(.horizontal)
             .padding(.top, 16)
-            .disabled(!isOver18)
-            .opacity(isOver18 ? 1 : 0.6)
+            .disabled(!isOver18 || isLoading)
+            .opacity((!isOver18 || isLoading) ? 0.6 : 1)
             
             Spacer()
         }
