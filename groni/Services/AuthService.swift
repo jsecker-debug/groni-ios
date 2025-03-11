@@ -38,13 +38,15 @@ class AuthService: ObservableObject {
         }
     }
     
-    func signUp(email: String, password: String, username: String, country: String, dateOfBirth: Date) async throws -> User {
+    func signUp(email: String, password: String, username: String, firstName: String, lastName: String, country: String, dateOfBirth: Date) async throws -> User {
         // 1. Create Firebase Auth user
         let authResult = try await auth.createUser(withEmail: email, password: password)
         
         // 2. Create User object
         let newUser = User(
             id: authResult.user.uid,
+            firstName: firstName,
+            lastName: lastName,
             username: username,
             email: email,
             profileImage: nil,
@@ -62,6 +64,8 @@ class AuthService: ObservableObject {
         // 3. Save user to Firestore
         let userData: [String: Any] = [
             "id": newUser.id,
+            "firstName": newUser.firstName,
+            "lastName": newUser.lastName,
             "username": newUser.username,
             "email": newUser.email,
             "profileImage": newUser.profileImage?.absoluteString as Any,
@@ -118,6 +122,8 @@ class AuthService: ObservableObject {
             
             self?.currentUser = User(
                 id: data["id"] as? String ?? "",
+                firstName: data["firstName"] as? String ?? "",
+                lastName: data["lastName"] as? String ?? "",
                 username: data["username"] as? String ?? "",
                 email: data["email"] as? String ?? "",
                 profileImage: URL(string: data["profileImage"] as? String ?? ""),

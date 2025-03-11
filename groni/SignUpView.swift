@@ -10,6 +10,8 @@ struct SignUpView: View {
     @State private var password = ""
     @State private var confirmPassword = ""
     @State private var username = ""
+    @State private var firstName = ""
+    @State private var lastName = ""
     @State private var country = ""
     @State private var dateOfBirth = Date()
     @State private var isOver18 = false
@@ -52,6 +54,8 @@ struct SignUpView: View {
                 case 2:
                     UsernameCountryView(
                         username: $username,
+                        firstName: $firstName,
+                        lastName: $lastName,
                         country: $country,
                         onNext: { currentStep = 3 },
                         onBack: { currentStep = 1 }
@@ -112,6 +116,8 @@ struct SignUpView: View {
                     email: email,
                     password: password,
                     username: username,
+                    firstName: firstName,
+                    lastName: lastName,
                     country: country,
                     dateOfBirth: dateOfBirth
                 )
@@ -224,6 +230,8 @@ struct EmailPasswordView: View {
 // MARK: - Step 2: Username and Country
 struct UsernameCountryView: View {
     @Binding var username: String
+    @Binding var firstName: String
+    @Binding var lastName: String
     @Binding var country: String
     var onNext: () -> Void
     var onBack: () -> Void
@@ -238,6 +246,32 @@ struct UsernameCountryView: View {
                 .font(.title2)
                 .fontWeight(.bold)
                 .padding(.top, 20)
+            
+            // First Name field
+            VStack(alignment: .leading, spacing: 8) {
+                Text("First Name")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                
+                TextField("Enter your first name", text: $firstName)
+                    .padding()
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(10)
+            }
+            .padding(.horizontal)
+            
+            // Last Name field
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Last Name")
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                
+                TextField("Enter your last name", text: $lastName)
+                    .padding()
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(10)
+            }
+            .padding(.horizontal)
             
             // Username field
             VStack(alignment: .leading, spacing: 8) {
@@ -301,8 +335,8 @@ struct UsernameCountryView: View {
             }
             .padding(.horizontal)
             .padding(.top, 16)
-            .disabled(username.isEmpty || country.isEmpty)
-            .opacity((username.isEmpty || country.isEmpty) ? 0.6 : 1)
+            .disabled(username.isEmpty || country.isEmpty || firstName.isEmpty || lastName.isEmpty)
+            .opacity((username.isEmpty || country.isEmpty || firstName.isEmpty || lastName.isEmpty) ? 0.6 : 1)
             
             Spacer()
         }

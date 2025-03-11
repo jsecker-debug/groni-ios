@@ -18,8 +18,8 @@ struct ProfileView: View {
             VStack(spacing: 20) {
                 // Profile header
                 VStack(spacing: 8) {
-                    // Name
-                    Text(authService.currentUser?.username ?? "Loading...")
+                    // Full Name
+                    Text("\(authService.currentUser?.firstName ?? "") \(authService.currentUser?.lastName ?? "Loading...")")
                         .font(.title3)
                         .fontWeight(.bold)
                         
@@ -48,7 +48,7 @@ struct ProfileView: View {
                     
                     // Username and join date
                     VStack(spacing: 4) {
-                        Text("@\(authService.currentUser?.username ?? "")")
+                        Text(authService.currentUser?.username ?? "")
                             .font(.subheadline)
                             .fontWeight(.bold)
                         

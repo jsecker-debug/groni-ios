@@ -2,6 +2,8 @@ import Foundation
 
 struct User: Identifiable, Codable {
     let id: String                     // Firebase Auth UID
+    var firstName: String              // User's first name
+    var lastName: String               // User's last name
     var username: String               // Display name
     var email: String                  // User's email
     var profileImage: URL?             // Profile photo link
