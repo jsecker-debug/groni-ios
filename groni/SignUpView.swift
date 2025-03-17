@@ -147,6 +147,13 @@ struct EmailPasswordView: View {
     var onNext: () -> Void
     
     @State private var passwordsMatch = true
+    @State private var isPasswordValid = true
+    
+    // Password validation function
+    private func validatePassword(_ password: String) -> Bool {
+        // Password must be at least 8 characters
+        return password.count >= 8
+    }
     
     var body: some View {
         VStack(spacing: 24) {
@@ -180,6 +187,15 @@ struct EmailPasswordView: View {
                     .padding()
                     .background(Color.gray.opacity(0.1))
                     .cornerRadius(10)
+                    .onChange(of: password) { newValue in
+                        isPasswordValid = validatePassword(newValue)
+                    }
+                
+                if !isPasswordValid && !password.isEmpty {
+                    Text("Password must be at least 8 characters long")
+                        .font(.caption)
+                        .foregroundColor(.red)
+                }
             }
             .padding(.horizontal)
             
@@ -204,11 +220,13 @@ struct EmailPasswordView: View {
             
             // Next button
             Button(action: {
-                if password == confirmPassword {
+                if password == confirmPassword && validatePassword(password) {
                     passwordsMatch = true
+                    isPasswordValid = true
                     onNext()
                 } else {
-                    passwordsMatch = false
+                    passwordsMatch = password == confirmPassword
+                    isPasswordValid = validatePassword(password)
                 }
             }) {
                 Text("Next")
@@ -221,6 +239,8 @@ struct EmailPasswordView: View {
             }
             .padding(.horizontal)
             .padding(.top, 16)
+            .disabled(!isPasswordValid || password.isEmpty || confirmPassword.isEmpty)
+            .opacity((!isPasswordValid || password.isEmpty || confirmPassword.isEmpty) ? 0.6 : 1)
             
             Spacer()
         }
